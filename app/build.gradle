@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.neerajsewani.notesapparchitecture"
-        minSdkVersion 24
+        minSdkVersion 22
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -44,9 +44,7 @@ dependencies {
     // Paging
     implementation "android.arch.paging:runtime:1.0.1"
 
-
     // Lifecycles only (no ViewModel or LiveData)
     implementation "android.arch.lifecycle:runtime:1.1.1"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
 }
-

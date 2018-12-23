@@ -1,5 +1,4 @@
 package com.example.neerajsewani.notesapparchitecture;
-
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -11,6 +10,7 @@ import java.util.List;
 
 @Dao
 public interface NoteDao {
+
     @Insert
     void insert(Note note);
 
@@ -23,6 +23,6 @@ public interface NoteDao {
     @Query("DELETE FROM note_table")
     void deleteAllNotes();
 
-    @Query("SELECT * FROM note_table ORDER BY priority")
+    @Query("SELECT * FROM note_table ORDER BY priority DESC")
     LiveData<List<Note>> getAllNotes();
 }

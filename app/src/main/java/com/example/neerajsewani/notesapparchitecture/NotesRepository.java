@@ -1,5 +1,4 @@
 package com.example.neerajsewani.notesapparchitecture;
-
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
@@ -10,47 +9,37 @@ public class NotesRepository {
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
 
-    public NotesRepository(Application application){
+    //  getting an instance of the database
+    public NotesRepository(Application application) {
         NoteDatabase database = NoteDatabase.getInstance(application);
-
-        //  generally we cant call noteDao as its an abstract method
-        //  but since we are using "Room" therefore, "Room" has generated
-        //  all the code in "NoteDao" class
-        //  "NoteDao" is called on the instance of the database
-        noteDao = database.noteDao();
-
-        //  again, "Room" has generated all the code for this method as well
+        noteDao = database.noteDao();   //  a "DAO" can be called on a database instance
         allNotes = noteDao.getAllNotes();
     }
 
-    /**
-     * below methods cant be executed as database operations cant happen
-     * on the main thread
-     * @param note
-     */
-    void insert(Note note){
-        new AsyncInsert(noteDao).execute(note);
+    public void insert(Note note) {
+        new InsertNoteAsyncTask(noteDao).execute(note);
     }
 
-    void update(Note note){
-        new AsyncInsert(noteDao).execute(note);
+    public void update(Note note) {
+        new UpdateNoteAsyncTask(noteDao).execute(note);
     }
 
-    void delete(Note note){
-        new AsyncInsert(noteDao).execute(note);
-
+    public void delete(Note note) {
+        new DeleteNoteAsyncTask(noteDao).execute(note);
     }
 
-    void deleteAllNotes(){
-        new AsyncInsert(noteDao).execute();
-
+    public void deleteAllNotes() {
+        new DeleteAllNotesAsyncTask(noteDao).execute();
     }
 
-    //  Async class for "insert method"
-    private static class AsyncInsert extends AsyncTask<Note, Void, Void> {
-        NoteDao noteDao;
+    public LiveData<List<Note>> getAllNotes() {
+        return allNotes;
+    }
 
-        private AsyncInsert(NoteDao noteDao) {
+    private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
+        private NoteDao noteDao;
+
+        private InsertNoteAsyncTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
@@ -61,11 +50,10 @@ public class NotesRepository {
         }
     }
 
-    //  Async class for "insert method"
-    private static class AsyncUpdate extends AsyncTask<Note, Void, Void> {
-        NoteDao noteDao;
+    private static class UpdateNoteAsyncTask extends AsyncTask<Note, Void, Void> {
+        private NoteDao noteDao;
 
-        private AsyncUpdate(NoteDao noteDao) {
+        private UpdateNoteAsyncTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
@@ -76,11 +64,10 @@ public class NotesRepository {
         }
     }
 
-    //  Async class for "insert method"
-    private static class AsyncDelete extends AsyncTask<Note, Void, Void> {
-        NoteDao noteDao;
+    private static class DeleteNoteAsyncTask extends AsyncTask<Note, Void, Void> {
+        private NoteDao noteDao;
 
-        private AsyncDelete(NoteDao noteDao) {
+        private DeleteNoteAsyncTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
@@ -91,11 +78,10 @@ public class NotesRepository {
         }
     }
 
-    //  Async class for "insert method"
-    private static class AsyncDeleteAll extends AsyncTask<Void, Void, Void> {
-        NoteDao noteDao;
+    private static class DeleteAllNotesAsyncTask extends AsyncTask<Void, Void, Void> {
+        private NoteDao noteDao;
 
-        private AsyncDeleteAll(NoteDao noteDao) {
+        private DeleteAllNotesAsyncTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
@@ -105,5 +91,4 @@ public class NotesRepository {
             return null;
         }
     }
-
 }
