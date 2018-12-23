@@ -25,7 +25,7 @@ public class AddNote extends AppCompatActivity {
         setContentView(R.layout.activity_add_note);
 
         //  setting up the action bar
-        getActionBar().setHomeAsUpIndicator(R.drawable.close);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.close);
         setTitle("Add Note");
 
         title = findViewById(R.id.title_et_add_note);
@@ -54,6 +54,7 @@ public class AddNote extends AppCompatActivity {
 
         //  sending the data back to the "MainActivity"
         setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
