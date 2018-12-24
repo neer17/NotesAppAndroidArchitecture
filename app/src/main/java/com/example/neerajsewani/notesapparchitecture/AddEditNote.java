@@ -10,7 +10,8 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-public class AddNote extends AppCompatActivity {
+public class AddEditNote extends AppCompatActivity {
+    public static final String ID = "ID";
     public static final String TITLE = "TITLE";
     public static final String DESC = "DESC";
     public static final String PRIORITY = "PRIORITY";
@@ -18,6 +19,7 @@ public class AddNote extends AppCompatActivity {
     private EditText title;
     private EditText description;
     private NumberPicker priority;
+    private boolean hasId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,16 @@ public class AddNote extends AppCompatActivity {
         //  setting the min and max value of the number picker
         priority.setMaxValue(10);
         priority.setMinValue(1);
+
+        //  getting the intent from the "MainActivity" in case of edit a note
+        Intent intent1 = getIntent();
+        hasId = intent1.hasExtra(ID);
+
+        if (hasId) {
+            title.setText(intent1.getStringExtra(TITLE));
+            description.setText(intent1.getStringExtra(DESC));
+            priority.setValue(intent1.getIntExtra(PRIORITY, -1));
+        }
     }
 
     private void saveNote() {
@@ -53,7 +65,13 @@ public class AddNote extends AppCompatActivity {
         intent.putExtra(PRIORITY, priorityValue);
 
         //  sending the data back to the "MainActivity"
-        setResult(RESULT_OK, intent);
+        if (hasId) {     //  case of editing the note
+            intent.putExtra(ID, getIntent().getIntExtra(ID, -1));
+            setResult(RESULT_OK, intent);
+        } else {
+            setResult(RESULT_OK, intent);
+        }
+
         finish();
     }
 
