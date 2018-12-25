@@ -1,9 +1,7 @@
 package com.example.neerajsewani.notesapparchitecture;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import androidx.room.PrimaryKey;
+import androidx.room.Entity;
 
 @Entity(tableName = "note_table")
 public class Note {
